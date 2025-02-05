@@ -42,5 +42,8 @@
   },
   "engines": {
     "node": ">=16.14"
+  },
+  "resolutions": {
+    "@babel/traverse": "7.23.2"
   }
 }
