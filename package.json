@@ -24,6 +24,7 @@
     "lint": "eslint ./src",
     "prepack": "bob build",
     "release": "release-it",
+    "prepare": "yarn prepack",
     "example": "yarn --cwd example",
     "bootstrap": "yarn example && yarn install",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
