@@ -25,29 +25,29 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
   override fun parseWriteRecord(records: ReadableArray): List<ExerciseSessionRecord> {
     return records.toMapList().map {
       val routeList = it.getMap("exerciseRoute")?.getArray("route")?.toMapList()?.map { sample -> {
-        val horizontalAccuracy = getLengthFromJsMap(sample.getMap("horizontalAccuracy"))
-        val verticalAccuracy = getLengthFromJsMap(sample.getMap("verticalAccuracy"))
-        val altitude = getLengthFromJsMap(sample.getMap("altitude"))
-        val location = ExerciseRoute.Location(
-          time = Instant.parse(sample.getString("time")),
-          latitude = sample.getDouble("latitude"),
-          longitude = sample.getDouble("longitude"),
-        )
+          val horizontalAccuracy = getLengthFromJsMap(sample.getMap("horizontalAccuracy"))
+          val verticalAccuracy = getLengthFromJsMap(sample.getMap("verticalAccuracy"))
+          val altitude = getLengthFromJsMap(sample.getMap("altitude"))
+          val location = ExerciseRoute.Location(
+            time = Instant.parse(sample.getString("time")),
+            latitude = sample.getDouble("latitude"),
+            longitude = sample.getDouble("longitude"),
+          )
 
-        if (horizontalAccuracy != null) {
-          location = location.setHorizontalAccuracy(horizontalAccuracy)
+          if (horizontalAccuracy != null) {
+            location = location.setHorizontalAccuracy(horizontalAccuracy)
+          }
+
+          if (verticalAccuracy != null) {
+            location = location.setVerticalAccuracy(verticalAccuracy)
+          }
+
+          if (altitude != null) {
+            location = location.setAltitude(altitude)
+          }
+
+          return@map location
         }
-
-        if (verticalAccuracy != null) {
-          location = location.setVerticalAccuracy(verticalAccuracy)
-        }
-
-        if (altitude != null) {
-          location = location.setAltitude(altitude)
-        }
-
-        return@map location
-      }
       } ?: emptyList()
 
       ExerciseSessionRecord(
