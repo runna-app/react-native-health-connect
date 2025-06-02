@@ -24,30 +24,29 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
 
   override fun parseWriteRecord(records: ReadableArray): List<ExerciseSessionRecord> {
     return records.toMapList().map {
-      val routeList = it.getMap("exerciseRoute")?.getArray("route")?.toMapList()?.map { sample -> {
-          val horizontalAccuracy = getLengthFromJsMap(sample.getMap("horizontalAccuracy"))
-          val verticalAccuracy = getLengthFromJsMap(sample.getMap("verticalAccuracy"))
-          val altitude = getLengthFromJsMap(sample.getMap("altitude"))
-          val location = ExerciseRoute.Location(
+      val routeList = it.getMap("exerciseRoute")?.getArray("route")?.toMapList()?.map { sample ->
+          var location = ExerciseRoute.Location(
             time = Instant.parse(sample.getString("time")),
             latitude = sample.getDouble("latitude"),
             longitude = sample.getDouble("longitude"),
           )
 
-          if (horizontalAccuracy != null) {
+          if (sample.getMap("horizontalAccuracy") != null) {
+            val horizontalAccuracy = getLengthFromJsMap(sample.getMap("horizontalAccuracy"))
             location = location.setHorizontalAccuracy(horizontalAccuracy)
           }
 
-          if (verticalAccuracy != null) {
+          if (sample.getMap("verticalAccuracy") != null) {
+            val verticalAccuracy = getLengthFromJsMap(sample.getMap("verticalAccuracy"))
             location = location.setVerticalAccuracy(verticalAccuracy)
           }
 
-          if (altitude != null) {
+          if (sample.getMap("altitude") != null) {
+            val altitude = getLengthFromJsMap(sample.getMap("altitude"))
             location = location.setAltitude(altitude)
           }
 
-          return@map location
-        }
+          location
       } ?: emptyList()
 
       ExerciseSessionRecord(
