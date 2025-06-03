@@ -25,14 +25,14 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
   override fun parseWriteRecord(records: ReadableArray): List<ExerciseSessionRecord> {
     return records.toMapList().map {
       val routeList = it.getMap("exerciseRoute")?.getArray("route")?.toMapList()?.map { sample ->
-          ExerciseRoute.Location(
-            time = Instant.parse(sample.getString("time")),
-            latitude = sample.getDouble("latitude"),
-            longitude = sample.getDouble("longitude"),
-            horizontalAccuracy = sample.getMap("horizontalAccuracy")?.let { getLengthFromJsMap(it) },
-            verticalAccuracy = sample.getMap("verticalAccuracy")?.let { getLengthFromJsMap(it) },
-            altitude = sample.getMap("altitude")?.let { getLengthFromJsMap(it) },
-          )
+        ExerciseRoute.Location(
+          time = Instant.parse(sample.getString("time")),
+          latitude = sample.getDouble("latitude"),
+          longitude = sample.getDouble("longitude"),
+          horizontalAccuracy = sample.getMap("horizontalAccuracy")?.let { getLengthFromJsMap(it) },
+          verticalAccuracy = sample.getMap("verticalAccuracy")?.let { getLengthFromJsMap(it) },
+          altitude = sample.getMap("altitude")?.let { getLengthFromJsMap(it) },
+        )
       } ?: emptyList()
 
       ExerciseSessionRecord(
